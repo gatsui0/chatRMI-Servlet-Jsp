@@ -1,3 +1,5 @@
+<%@ page import = " java.util.* " %>
+
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -690,15 +692,20 @@ Try writing a new message! :)
 						</div>
 					</div>
 				</li>
+       <%ArrayList<String> std = (ArrayList<String>) request.getAttribute("users");
+		 if(!std.isEmpty()){ 
+        for(String s:std){%>
 				<li class="contact">
 					<div class="wrap">
 						<img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="" />
+						
 						<div class="meta">
-							<p class="name">Foreach usario</p>
-							<p class="preview">Ultima mensagem enviada ou recebida.</p>
+							<p class="name"><%= s %></p>
+							<p class="preview"> </p>
 						</div>
 					</div>
 				</li>
+            <%}}%>
 			</ul>
 		</div>
 	</div>

@@ -29,8 +29,8 @@ public class Login extends HttpServlet {
 
     public void init() {
         try {
-            LocateRegistry.createRegistry(4321);
-            Naming.rebind("rmi://localhost:4321/remote",new Server());
+            LocateRegistry.createRegistry(4444);
+            Naming.rebind("rmi://localhost:4444/remote",new Server());
             System.out.println("Server Started ...");
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -63,15 +63,17 @@ public class Login extends HttpServlet {
              //VERIFICANDO SE USER EXISTE NO BANCO DE DADOS
              boolean existlogin = db.login(login, password);
              if(existlogin) {
-                 res.sendRedirect("/chat.html");
+                 res.sendRedirect("/chatRMI/chat");
              }
              if(!existlogin){
 
             	 res.sendError(502, "login inexistente");
              }
-             
-             Client client = new Client(db.getName(login));
+             String nameDB = db.getName(login);
+             Client client = new Client(nameDB);
+             System.out.println("NOME USUARIO>> "+ client.getName());
              client.server.addClient(client);
+
       
          } catch (Exception e) {
              e.printStackTrace();

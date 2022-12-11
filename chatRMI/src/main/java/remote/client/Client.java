@@ -19,7 +19,7 @@ public class Client extends UnicastRemoteObject implements InterfaceClient {
 		super();
 		// TODO Auto-generated constructor stub
 		this.name = name;
-		this.server = (InterfaceServer) Naming.lookup("rmi://localhost:4321/remote");
+		this.server = (InterfaceServer) Naming.lookup("rmi://localhost:4444/remote");
 	}
 
 	public String name;

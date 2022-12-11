@@ -35,6 +35,7 @@ public class Server extends UnicastRemoteObject implements InterfaceServer {
 	}
     public synchronized void addClient(InterfaceClient client) throws RemoteException {
         this.clients.add(client);
+        System.out.print("chegou aqui");
     }
 	public List<String> getNameClients() throws RemoteException{
 		

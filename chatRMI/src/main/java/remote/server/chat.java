@@ -1,14 +1,20 @@
 package remote.server;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import remote.client.Client;
 
 /**
  * Servlet implementation class chat
@@ -29,10 +35,21 @@ public class chat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<String> list = Arrays.asList("one", "two", "three");
+		Client retornarArray = null;
+		try {
+			retornarArray = new Client("retornarArray");
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ArrayList<String> list = (ArrayList<String>) retornarArray.server.getNameClients();
+		System.out.print(list);
 
-		request.setAttribute("users", list);
-		response.sendRedirect("chat.jsp");
+		request.setAttribute("users",list);
+
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/chat.jsp");
+		dispatcher.forward(request, response);
 	}
 
 	/**
