@@ -44,7 +44,6 @@ public class Register extends HttpServlet {
              if(user) res.sendError(401, "Esse login já existe!");
              if(!user) db.createUser(name, login, password);
       
-            res.setStatus(200);
             req.setAttribute("message", "fhijfgh");
 
          } catch (Exception e) {

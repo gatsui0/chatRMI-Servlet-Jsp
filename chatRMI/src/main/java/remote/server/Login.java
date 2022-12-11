@@ -1,11 +1,16 @@
 package remote.server;
 
 import java.io.IOException;
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import remote.client.Client;
+import remote.server.rmi.Server;
 
 /**
  * Servlet implementation class Login
@@ -22,6 +27,15 @@ public class Login extends HttpServlet {
     }
 
 
+    public void init() {
+        try {
+            LocateRegistry.createRegistry(4321);
+            Naming.rebind("rmi://localhost:4321/remote",new Server());
+            System.out.println("Server Started ...");
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -55,6 +69,9 @@ public class Login extends HttpServlet {
 
             	 res.sendError(502, "login inexistente");
              }
+             
+             Client client = new Client(db.getName(login));
+             client.server.addClient(client);
       
          } catch (Exception e) {
              e.printStackTrace();

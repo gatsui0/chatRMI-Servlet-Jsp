@@ -57,6 +57,22 @@ public class Db {
         }
         return true;
     }
+    
+    public String getName(String login){
+        try {
+            preparedStatement = connection.prepareStatement(
+                "select * from users where login = ?");
+            preparedStatement.setString(1, login);  
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getString(2);
+
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+		return null;
+
+    }
 
     // private User writeResultSet(ResultSet resultSet) throws SQLException {
     //     int id = resultSet.getInt("id");
