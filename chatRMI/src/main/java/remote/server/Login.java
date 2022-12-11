@@ -1,9 +1,7 @@
 package remote.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +30,8 @@ public class Login extends HttpServlet {
 
 
          try {
-             Db db2 = new Db();
-             db2.connectionDataBase();
+             Db db = new Db();
+             db.connectionDataBase();
 
         //VERIFICAÇÃO DE CARACTERES
 
@@ -49,16 +47,18 @@ public class Login extends HttpServlet {
             if(password.length() < 3) res.sendError(406, "senha fraca");
 
              //VERIFICANDO SE USER EXISTE NO BANCO DE DADOS
-//             boolean existlogin = db.login(login, password);
-//             if(existlogin) res.sendRedirect("chat.html");
-//             if(!existlogin){
-//            	 req.setAttribute("error", "login inválido!");
-//            	 req.getRequestDispatcher("login.html").forward(req,res);
-//             }
+             boolean existlogin = db.login(login, password);
+             if(existlogin) {
+                 res.sendRedirect("/chat.html");
+             }
+             if(!existlogin){
+
+            	 res.sendError(502, "login inexistente");
+             }
       
          } catch (Exception e) {
              e.printStackTrace();
-             res.sendError(502, "login inexistente");
+             
          }
   }
 

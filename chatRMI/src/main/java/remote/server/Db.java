@@ -89,10 +89,10 @@ public class Db {
             preparedStatement = connection.prepareStatement(
                 "select * from users where login = ? and password = ?");
             preparedStatement.setString(1, login);  
-            preparedStatement.setString(1, password);  
+            preparedStatement.setString(2, password);  
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            if(resultSet.getString(3) == login && resultSet.getString(4) == password) return true;
+            if(!resultSet.getString(3).isEmpty()) return true;
 
 
         } catch (SQLException e) {

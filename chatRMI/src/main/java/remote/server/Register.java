@@ -3,6 +3,7 @@ package remote.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,9 @@ public class Register extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		req.getRequestDispatcher("/register.jsp").forward(req, res);
+	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
@@ -41,7 +45,7 @@ public class Register extends HttpServlet {
              if(!user) db.createUser(name, login, password);
       
             res.setStatus(200);
-             printer.println("Usuário criado com sucesso!");
+            req.setAttribute("message", "fhijfgh");
 
          } catch (Exception e) {
              e.printStackTrace();
