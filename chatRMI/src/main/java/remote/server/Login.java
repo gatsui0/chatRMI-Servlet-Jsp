@@ -1,13 +1,15 @@
 package remote.server;
 
 import java.io.IOException;
-import java.rmi.Naming;
+//import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import remote.client.Client;
 import remote.server.rmi.Server;
@@ -29,8 +31,11 @@ public class Login extends HttpServlet {
 
     public void init() {
         try {
-            LocateRegistry.createRegistry(4444);
-            Naming.rebind("rmi://localhost:4444/remote",new Server());
+//            LocateRegistry.createRegistry(4444);
+//            Naming.rebind("rmi://localhost:4444/remote",new Server());
+//            System.out.println("Server Started ...");
+            Registry registry = LocateRegistry.createRegistry(4444);
+            registry.rebind("remote", new Server());
             System.out.println("Server Started ...");
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -63,17 +68,19 @@ public class Login extends HttpServlet {
              //VERIFICANDO SE USER EXISTE NO BANCO DE DADOS
              boolean existlogin = db.login(login, password);
              if(existlogin) {
+                 String nameDB = db.getName(login);
+                 Client client = new Client(nameDB);
+            	// Armazena o objeto em uma sessão
+            	 HttpSession session = req.getSession();
+            	 session.setAttribute("objeto", client);
+            	 
+
                  res.sendRedirect("/chatRMI/chat");
              }
              if(!existlogin){
 
             	 res.sendError(502, "login inexistente");
              }
-             String nameDB = db.getName(login);
-             Client client = new Client(nameDB);
-             System.out.println("NOME USUARIO>> "+ client.getName());
-             client.server.addClient(client);
-
       
          } catch (Exception e) {
              e.printStackTrace();

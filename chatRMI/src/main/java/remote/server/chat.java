@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import remote.client.Client;
 
@@ -35,21 +36,14 @@ public class chat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Client retornarArray = null;
-		try {
-			retornarArray = new Client("retornarArray");
-		} catch (RemoteException | MalformedURLException | NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		HttpSession session = request.getSession();
+		Client client = (Client) session.getAttribute("objeto");
 		
-		ArrayList<String> list = (ArrayList<String>) retornarArray.server.getNameClients();
-		System.out.print(list);
+		ArrayList<String> list = (ArrayList<String>) client.server.getNameClients();
 
 		request.setAttribute("users",list);
-
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/chat.jsp");
-		dispatcher.forward(request, response);
+		request.setAttribute("name", client.getName());
+		getServletContext().getRequestDispatcher("/chat.jsp").forward(request, response);
 	}
 
 	/**
@@ -57,7 +51,9 @@ public class chat extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String parameter = request.getParameter("parameter");
+		request.setAttribute("mensage", "mensagem do servidor!");
+		getServletContext().getRequestDispatcher("/chat.jsp").forward(request, response);
 	}
 
 }

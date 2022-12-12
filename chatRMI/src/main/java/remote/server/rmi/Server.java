@@ -10,11 +10,12 @@ import remote.client.InterfaceClient;
 public class Server extends UnicastRemoteObject implements InterfaceServer {
 
 	private static final long serialVersionUID = 1L;
-	ArrayList<InterfaceClient> clients = new ArrayList<>();
+	private final ArrayList<InterfaceClient> clients;
 	
 	public Server() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
+		this.clients = new ArrayList<>();
 	}
 	
 	public synchronized void sendMessageToEveryone(String message, List<String> list) throws RemoteException {
@@ -33,9 +34,9 @@ public class Server extends UnicastRemoteObject implements InterfaceServer {
             }
 	}
 	}
-    public synchronized void addClient(InterfaceClient client) throws RemoteException {
+	@Override
+    public void addClient(InterfaceClient client) throws RemoteException {
         this.clients.add(client);
-        System.out.print("chegou aqui");
     }
 	public List<String> getNameClients() throws RemoteException{
 		

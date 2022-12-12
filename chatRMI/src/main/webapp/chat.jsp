@@ -1,4 +1,4 @@
-<%@ page import = " java.util.* " %>
+<%@ page import = " java.util.*, java.net.*, java.io.* " %>
 
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -672,13 +672,48 @@ A concept for a chat interface.
 Try writing a new message! :)
 
 -->
+<%
 
+
+    try {
+      URL url = new URL("localhost:8080/chatRMI/chat");
+      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      con.setRequestMethod("POST");
+
+      int responseCode = con.getResponseCode();
+      System.out.println("Response code: " + responseCode);
+
+      BufferedReader in = new BufferedReader(
+        new InputStreamReader(con.getInputStream()));
+      String inputLine;
+      StringBuilder response2 = new StringBuilder();
+
+      while ((inputLine = in.readLine()) != null) {
+        response2.append(inputLine);
+      }
+      in.close();
+
+      // Imprime a resposta da requisição
+      System.out.println(response.toString());
+    } catch (Exception e) {
+
+    }
+
+  
+
+
+
+%>
+
+
+
+<% String name = (String) request.getAttribute("name"); %>
 <div id="frame">
 	<div id="sidepanel">
 		<div id="profile">
 			<div class="wrap">
 				<img id="profile-img" src="https://static.thenounproject.com/png/4066324-200.png" class="active" alt="" />
-				<p>NOME USUARIO</p>
+				<p><%= name %></p>
 			</div>
 		</div>
 		<div id="contacts">
@@ -711,8 +746,7 @@ Try writing a new message! :)
 	</div>
 	<div class="content">
 		<div class="contact-profile">
-			<img src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" alt="" />
-			<p>OUTRO USUARIO</p>
+			<p>    Sala</p>
 		</div>
 		<div class="messages">
 			<ul>
@@ -726,17 +760,26 @@ Try writing a new message! :)
 				</li>
 			</ul>
 		</div>
-		<div class="message-input">
-			<div class="wrap">
-			<input type="text" placeholder="Escreva sua mensagem..." />
-			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+		<form id="chatEnter" enctype="application/x-www-form-urlencoded" action="chat?parameter=teste" method="post">
+			<div class="message-input">
+				<div class="wrap">
+				<input type="text" placeholder="Escreva sua mensagem..." />
+				<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+				<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				</div>
 			</div>
-		</div>
+		</form>
+
 	</div>
 </div>
 <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
 <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+
+const form = document.getElementById('chatEnter')
+form.addEventListener('submit', e => {
+    e.preventDefault()
+    console.log('Deu certo')
+})
 
 function newMessage() {
 	message = $(".message-input input").val();
@@ -750,6 +793,8 @@ function newMessage() {
 };
 
 $('.submit').click(function() {
+	
+
   newMessage();
 });
 

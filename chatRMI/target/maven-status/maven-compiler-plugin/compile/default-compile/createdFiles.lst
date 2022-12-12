@@ -1,0 +1,8 @@
+remote\client\Client.class
+remote\server\chat.class
+remote\server\rmi\InterfaceServer.class
+remote\server\Register.class
+remote\server\Login.class
+remote\server\Db.class
+remote\server\rmi\Server.class
+remote\client\InterfaceClient.class

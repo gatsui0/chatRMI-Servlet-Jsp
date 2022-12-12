@@ -1,9 +1,9 @@
 package remote.server.rmi;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import remote.client.Client;
 import remote.client.InterfaceClient;
 
 public interface InterfaceServer extends Remote {
